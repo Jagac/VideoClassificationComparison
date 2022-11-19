@@ -24,3 +24,17 @@ def store_frames(frames, path2store):
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)  
         path2img = os.path.join(path2store, "frame"+str(ii)+".jpg")
         cv2.imwrite(path2img, frame)
+
+
+
+def get_vids(path2ajpgs):
+    listOfCats = os.listdir(path2ajpgs)
+    ids = []
+    labels = []
+    for catg in listOfCats:
+        path2catg = os.path.join(path2ajpgs, catg)
+        listOfSubCats = os.listdir(path2catg)
+        path2subCats= [os.path.join(path2catg,los) for los in listOfSubCats]
+        ids.extend(path2subCats)
+        labels.extend([catg]*len(listOfSubCats))
+    return ids, labels, listOfCats
