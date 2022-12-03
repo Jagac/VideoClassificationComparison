@@ -1,9 +1,9 @@
-from preprocess import *
-from parameters import *
+
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
 from tensorflow.keras.layers import *
 from tensorflow.keras.models import Sequential
+
 import matplotlib.pyplot as plt
 import time
 
@@ -62,20 +62,20 @@ def long_term_conv_model():
     # https://arxiv.org/abs/1411.4389
     model = Sequential()
 
-    model.add(TimeDistributed(Conv2D(4, (3,3)), padding = 'same', activation = 'relu', input_shape = (SEQUENCE_LENGTH, IMAGE_HEIGHT, IMAGE_WIDTH, 3)))
-    model.add(TimeDistributed(MaxPooling2d((2, 2))))
+    model.add(TimeDistributed(Conv2D(4, (3,3), padding = 'same', activation = 'relu'), input_shape = (SEQUENCE_LENGTH, IMAGE_HEIGHT, IMAGE_WIDTH, 3)))
+    model.add(TimeDistributed(MaxPooling2D((2, 2))))
     model.add(TimeDistributed(Dropout(0.2)))
 
-    model.add(TimeDistributed(Conv2D(8, (3,3)), padding = 'same', activation = 'relu'))
-    model.add(TimeDistributed(MaxPooling2d((2,2))))
+    model.add(TimeDistributed(Conv2D(8, (3,3), padding = 'same', activation = 'relu')))
+    model.add(TimeDistributed(MaxPooling2D((2,2))))
     model.add(TimeDistributed(Dropout(0.2)))
 
-    model.add(TimeDistributed(Conv2D(14, (3,3)), padding = 'same', activation = 'relu'))
-    model.add(TimeDistributed(MaxPooling2d((2,2))))
+    model.add(TimeDistributed(Conv2D(14, (3,3), padding = 'same', activation = 'relu')))
+    model.add(TimeDistributed(MaxPooling2D((2,2))))
     model.add(TimeDistributed(Dropout(0.2)))
 
-    model.add(TimeDistributed(Conv2D(16, (3,3)), padding = 'same', activation = 'relu'))
-    model.add(TimeDistributed(MaxPooling2d((2,2))))
+    model.add(TimeDistributed(Conv2D(16, (3,3), padding = 'same', activation = 'relu')))
+    model.add(TimeDistributed(MaxPooling2D((2,2))))
     
     model.add(TimeDistributed(Flatten()))
     model.add(LSTM(32))
@@ -90,11 +90,9 @@ model_1 = conv_lstm_model()
 model_1.compile(loss = 'categorical_crossentropy', optimizer = 'Adam', metrics = ['accuracy'])
 print("Model 1 created")
 
-st = time.time()
+
 model_1_history = model_1.fit(x = features_train, y = labels_train, epochs = 50, batch_size = 4, shuffle = True, validation_split = 0.2)
-et = time.time()
-elapsed_time = et - st
-print('Execution time:', elapsed_time, 'seconds')
+
 
 model_1_evaluate = model_1.evaluate(features_test, labels_test)
 model_1.save("model1.h5")
@@ -107,11 +105,9 @@ model_2 = long_term_conv_model()
 model_2.compile(loss = 'categorical_crossentropy', optimizer = 'Adam', metrics = ['accuracy'])
 print("Model 2 created")
 
-st = time.time()
+
 model_2_history = model_2.fit(x = features_train, y = labels_train, epochs = 50, batch_size = 4, shuffle = True, validation_split = 0.2)
-et = time.time()
-elapsed_time = et - st
-print('Execution time:', elapsed_time, 'seconds')
+
 
 model_2_evaluate = model_2.evaluate(features_test, labels_test)
 model_2.save("model2.h5")
