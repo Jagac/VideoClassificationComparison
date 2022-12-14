@@ -3,9 +3,9 @@
 import cv2
 import os
 import numpy as np
-from progressbar import ProgressBar
 from parameters import *
-
+import matplotlib.pyplot as plt
+import pandas as pd
 
 def extract_frames(video_path):
     # https://learnopencv.com/read-write-and-display-a-video-using-opencv-cpp-python/
@@ -26,7 +26,6 @@ def extract_frames(video_path):
 
     video.release()
     return frames
-
 
 print("building dataset")
 def build_dataset(): #given classes we can create a dataset
@@ -53,7 +52,6 @@ def build_dataset(): #given classes we can create a dataset
     
     return features, labels, path2videos
 
-
 def to_categorical(y, num_classes=None, dtype="float32"):
     # https://github.com/keras-team/keras/blob/master/keras/utils/np_utils.py#L9-L37
     y = np.array(y, dtype="int")
@@ -71,6 +69,11 @@ def to_categorical(y, num_classes=None, dtype="float32"):
     return categorical
 
 
-
-
+def model_evaluation_plot(model_name, model_history): 
+    pd.DataFrame(model_history.history).plot(figsize=(8, 5))
+    plt.title(model_name)
+    plt.xlabel("Number of Epochs")
+    plt.ylabel("Metrics")
+    plt.savefig(model_name + ".png")
+    
 
