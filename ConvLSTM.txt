@@ -1,0 +1,42 @@
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ conv_lstm2d (ConvLSTM2D)    (None, 60, 62, 62, 8)     3200      
+                                                                 
+ max_pooling3d (MaxPooling3D  (None, 60, 31, 31, 8)    0         
+ )                                                               
+                                                                 
+ time_distributed (TimeDistr  (None, 60, 31, 31, 8)    0         
+ ibuted)                                                         
+                                                                 
+ conv_lstm2d_1 (ConvLSTM2D)  (None, 60, 29, 29, 12)    8688      
+                                                                 
+ max_pooling3d_1 (MaxPooling  (None, 60, 15, 15, 12)   0         
+ 3D)                                                             
+                                                                 
+ time_distributed_1 (TimeDis  (None, 60, 15, 15, 12)   0         
+ tributed)                                                       
+                                                                 
+ conv_lstm2d_2 (ConvLSTM2D)  (None, 60, 13, 13, 16)    16192     
+                                                                 
+ max_pooling3d_2 (MaxPooling  (None, 60, 7, 7, 16)     0         
+ 3D)                                                             
+                                                                 
+ time_distributed_2 (TimeDis  (None, 60, 7, 7, 16)     0         
+ tributed)                                                       
+                                                                 
+ conv_lstm2d_3 (ConvLSTM2D)  (None, 60, 5, 5, 20)      26000     
+                                                                 
+ max_pooling3d_3 (MaxPooling  (None, 60, 3, 3, 20)     0         
+ 3D)                                                             
+                                                                 
+ flatten (Flatten)           (None, 10800)             0         
+                                                                 
+ dense (Dense)               (None, 4)                 43204     
+                                                                 
+=================================================================
+Total params: 97,284
+Trainable params: 97,284
+Non-trainable params: 0
+_________________________________________________________________

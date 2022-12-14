@@ -1,7 +1,6 @@
 # take best performing model from modeltests.py and improve it
-from modeltests import long_term_conv_model
 from preprocess import model_evaluation_plot, to_categorical, build_dataset
-from parameters import CLASSES_LIST, SEQUENCE_LENGTH, IMAGE_HEIGHT, IMAGE_WIDTH, DIR
+from parameters import CLASSES_LIST, SEQUENCE_LENGTH, IMAGE_HEIGHT, IMAGE_WIDTH
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.layers import TimeDistributed, Conv2D, MaxPooling2D, Dropout, Bidirectional, LSTM, Flatten, Dense, Layer
 from tensorflow.keras.models import Sequential
@@ -30,7 +29,6 @@ class AttentionLSTM(Layer):
         return K.sum(output, axis=1)
 
 def long_term_conv_model_improved():
-    # https://arxiv.org/abs/1411.4389
     model = Sequential()
 
     model.add(TimeDistributed(Conv2D(8, (3,3), padding = 'same', activation = 'relu'), input_shape = (SEQUENCE_LENGTH, IMAGE_HEIGHT, IMAGE_WIDTH, 3)))
@@ -72,7 +70,34 @@ print(f"Execution time: {et-st}")
 model_evaluation_plot("Attention + bi-LSTM LRCNN Results", model_1_history) 
 model_1_evaluate = model_1.evaluate(features_test, labels_test)
 
+def long_term_conv_model():
+    # https://arxiv.org/abs/1411.4389
+    model = Sequential()
 
+    model.add(TimeDistributed(Conv2D(8, (3,3), padding = 'same', activation = 'relu'), input_shape = (SEQUENCE_LENGTH, IMAGE_HEIGHT, IMAGE_WIDTH, 3)))
+    model.add(TimeDistributed(MaxPooling2D((2, 2))))
+    model.add(TimeDistributed(Dropout(0.2)))
+
+    model.add(TimeDistributed(Conv2D(12, (3,3), padding = 'same', activation = 'relu')))
+    model.add(TimeDistributed(MaxPooling2D((2,2))))
+    model.add(TimeDistributed(Dropout(0.2)))
+
+    model.add(TimeDistributed(Conv2D(16, (3,3), padding = 'same', activation = 'relu')))
+    model.add(TimeDistributed(MaxPooling2D((2,2))))
+    model.add(TimeDistributed(Dropout(0.2)))
+
+    model.add(TimeDistributed(Conv2D(20, (3,3), padding = 'same', activation = 'relu')))
+    model.add(TimeDistributed(MaxPooling2D((2,2))))
+    
+    model.add(TimeDistributed(Flatten()))
+    model.add(LSTM(32))
+    model.add(Dense(len(CLASSES_LIST), activation = "softmax"))
+
+    with open('LRCNN.txt', 'w') as f:
+        model.summary(print_fn=lambda x: f.write(x + '\n'))
+
+    return model
+    
 model_2 = long_term_conv_model()
 early_stopping = EarlyStopping(monitor= 'val_loss', patience = 10, mode = 'min', restore_best_weights = True)
 model_2.compile(loss = 'categorical_crossentropy', optimizer = 'Adam', metrics = ['accuracy'])
