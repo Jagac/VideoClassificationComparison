@@ -1,7 +1,5 @@
-from tensorflow import keras
 from keras.layers import *
 from keras.models import Model
-import tensorflow as tf
 from keras.applications.vgg16 import VGG16
 from keras.callbacks import EarlyStopping
 from preprocess import model_evaluation_plot, to_categorical, build_dataset
@@ -9,7 +7,7 @@ from parameters import CLASSES_LIST, SEQUENCE_LENGTH, IMAGE_HEIGHT, IMAGE_WIDTH,
 from sklearn.model_selection import train_test_split
 import time
 from keras.optimizers import Nadam
-from keras import backend as K
+
 
 features, labels, video_files_paths = build_dataset()
 one_hot_encoded_labels = to_categorical(labels)
@@ -17,9 +15,9 @@ features_train, features_test, labels_train, labels_test = train_test_split(feat
 
 
 input = Input(shape=(SEQUENCE_LENGTH, IMAGE_HEIGHT, IMAGE_WIDTH, 3))
-vgg = VGG16(input_shape=(IMAGE_WIDTH, IMAGE_HEIGHT, 3),weights="imagenet",include_top=False)
+vgg = VGG16(input_shape=(IMAGE_WIDTH, IMAGE_HEIGHT, 3), weights="imagenet",include_top=False)
 cnn_1 = GlobalAveragePooling2D()(vgg.output)
-cnn = Model(inputs=vgg.input, outputs=vgg)
+cnn = Model(inputs=vgg.input, outputs=cnn_1)
 cnn.trainable = False
 
 frames = TimeDistributed(cnn)(input)
