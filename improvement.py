@@ -2,7 +2,7 @@
 from preprocess import model_evaluation_plot, to_categorical, build_dataset
 from parameters import CLASSES_LIST, SEQUENCE_LENGTH, IMAGE_HEIGHT, IMAGE_WIDTH
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.layers import TimeDistributed, Conv2D, MaxPooling2D, Dropout, Bidirectional, LSTM, Flatten, Dense, Layer
+from tensorflow.keras.layers import TimeDistributed, Conv2D, MaxPooling2D, Dropout, Bidirectional, LSTM, Flatten, Dense, Layer, BatchNormalization
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras import backend as K
@@ -33,14 +33,17 @@ def long_term_conv_model_improved():
 
     model.add(TimeDistributed(Conv2D(8, (3,3), padding = 'same', activation = 'relu'), input_shape = (SEQUENCE_LENGTH, IMAGE_HEIGHT, IMAGE_WIDTH, 3)))
     model.add(TimeDistributed(MaxPooling2D((2, 2))))
+    model.add(BatchNormalization())
     model.add(TimeDistributed(Dropout(0.2)))
 
     model.add(TimeDistributed(Conv2D(12, (3,3), padding = 'same', activation = 'relu')))
     model.add(TimeDistributed(MaxPooling2D((2,2))))
+    model.add(BatchNormalization())
     model.add(TimeDistributed(Dropout(0.2)))
 
     model.add(TimeDistributed(Conv2D(16, (3,3), padding = 'same', activation = 'relu')))
     model.add(TimeDistributed(MaxPooling2D((2,2))))
+    model.add(BatchNormalization())
     model.add(TimeDistributed(Dropout(0.2)))
 
     model.add(TimeDistributed(Conv2D(20, (3,3), padding = 'same', activation = 'relu')))
