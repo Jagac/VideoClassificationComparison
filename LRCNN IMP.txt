@@ -1,0 +1,53 @@
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ time_distributed (TimeDistr  (None, 60, 64, 64, 8)    224       
+ ibuted)                                                         
+                                                                 
+ time_distributed_1 (TimeDis  (None, 60, 32, 32, 8)    0         
+ tributed)                                                       
+                                                                 
+ time_distributed_2 (TimeDis  (None, 60, 32, 32, 8)    0         
+ tributed)                                                       
+                                                                 
+ time_distributed_3 (TimeDis  (None, 60, 32, 32, 12)   876       
+ tributed)                                                       
+                                                                 
+ time_distributed_4 (TimeDis  (None, 60, 16, 16, 12)   0         
+ tributed)                                                       
+                                                                 
+ time_distributed_5 (TimeDis  (None, 60, 16, 16, 12)   0         
+ tributed)                                                       
+                                                                 
+ time_distributed_6 (TimeDis  (None, 60, 16, 16, 16)   1744      
+ tributed)                                                       
+                                                                 
+ time_distributed_7 (TimeDis  (None, 60, 8, 8, 16)     0         
+ tributed)                                                       
+                                                                 
+ time_distributed_8 (TimeDis  (None, 60, 8, 8, 16)     0         
+ tributed)                                                       
+                                                                 
+ time_distributed_9 (TimeDis  (None, 60, 8, 8, 20)     2900      
+ tributed)                                                       
+                                                                 
+ time_distributed_10 (TimeDi  (None, 60, 4, 4, 20)     0         
+ stributed)                                                      
+                                                                 
+ time_distributed_11 (TimeDi  (None, 60, 320)          0         
+ stributed)                                                      
+                                                                 
+ bidirectional (Bidirectiona  (None, 60, 64)           90368     
+ l)                                                              
+                                                                 
+ attention_lstm (AttentionLS  (None, 64)               124       
+ TM)                                                             
+                                                                 
+ dense (Dense)               (None, 4)                 260       
+                                                                 
+=================================================================
+Total params: 96,496
+Trainable params: 96,496
+Non-trainable params: 0
+_________________________________________________________________
